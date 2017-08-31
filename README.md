@@ -47,9 +47,9 @@ $ python3 pass_pwned.py -p
 ```bash 
 $ python3 pass_pwned.py -f PATH_TO_THE_FILE
 ```
-## Usage
+## Tests
 
-2. To run tests
+* To run tests:
 ```bash 
 $ python3 -m unittest tests.py
 ```
