@@ -1,5 +1,4 @@
 import sys
-from time import sleep
 from models import HIBPApi
 from utils import parse_args, Color, draw_picture
 
