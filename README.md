@@ -3,7 +3,7 @@
 [![Python3](https://img.shields.io/badge/python-3.4%2C%203.5%2C%203%2C6-blue.svg)](https://www.python.org/)
 [![requests](https://img.shields.io/badge/requests-2.18.4-yellowgreen.svg)](http://docs.python-requests.org/en/master/)
 ## Demo:
-![](https://github.com/sehlat57/instalike_bot/blob/master/src.gif)
+![](https://github.com/sehlat57/pass_pwned/blob/master/src.gif)
 ## Description
 On august 2017 Troy Hunt web security expert from Australia introduced a new service **"Pwned Passwords"**  on his [website](https://haveibeenpwned.com/Passwords) that provides opportunity to check passwords against those obtained from previous data breaches (more than 320+ million passwords).
 
