@@ -26,7 +26,7 @@ class PassEncrypt(object):
 class HIBPApi(object):
 
     color = Color()
-    uri = 'https://haveibeenpwned.com/api/v2/pwnedpassword'
+    uri = 'https://api.pwnedpasswords.com/range/'
     headers = {'user_agent': 'pass_pwned'}
 
     def __init__(self, passwd, file_passwd):
@@ -46,16 +46,22 @@ class HIBPApi(object):
                 self.color.brush('working', 'cyan')))
             encrypted_pass = PassEncrypt(self.passwd).encrypt()
             for attempt in range(attempts):
-                hibp_request = requests.post(
-                    self.uri, data={'Password': encrypted_pass},
-                    headers=self.headers)
+                hibp_request = requests.get('{}{}'.format(self.uri,
+                                                          encrypted_pass[:5]),
+                                            headers=self.headers)
                 if hibp_request.status_code == 200:
+                    raw_data = hibp_request.text.split('\n')
+                    suffixes = {hash_suff.split(':')[0]:int(hash_suff.split(':')[1].replace('\r', '')) for hash_suff in raw_data}
+                    breaches = suffixes.get(encrypted_pass[5:].upper())
+                    if breaches is not None:
+                        return self.color.brush(
+                            'Your password is PWNeD (appears {} times in DB) :('.format(breaches), 'red')
                     return self.color.brush(
-                            'Your password is PWNeD :(', 'red')
-                elif hibp_request.status_code == 404:
-                    return self.color.brush(
-                            'Your password not found in HIBP DB', 'green')
+                        'Your password is not found in HIBP DB', 'green')
                 time.sleep(1.5)
+            print('{}'.format(self.color.brush(
+                'Unexpected response code. Shutting down', 'purple')))
+            sys.exit()
         except Exception as e:
             print('[{}] oops, something went wrong: {}'.format(
                 self.color.brush('fail', 'red'), e))
@@ -85,12 +91,18 @@ class HIBPApi(object):
                 progress_bar(completion, num_of_passwd, start_time)
                 encrypted_pass = PassEncrypt(passwd).encrypt()
                 for attempt in range(attempts):
-                    hibp_request = requests.post(
-                        self.uri, data={'Password': encrypted_pass},
-                        headers=self.headers)
+                    hibp_request = requests.get('{}{}'.format(self.uri,
+                                                          encrypted_pass[:5]),
+                                            headers=self.headers)
                     if hibp_request.status_code == 200:
-                        pass_dict[passwd] = 'PWNeD :('
-                    elif hibp_request.status_code == 404:
+                        raw_data = hibp_request.text.split('\n')
+                        suffixes = {hash_suff.split(':')[0]: int(
+                            hash_suff.split(':')[1].replace('\r', '')) for
+                                    hash_suff in raw_data}
+                        breaches = suffixes.get(encrypted_pass[5:].upper())
+                        if breaches is not None:
+                            pass_dict[passwd] = 'PWNeD (appears {} times in DB) :('.format(breaches)
+                            break
                         pass_dict[passwd] = 'Not found in HIBP DB'
                         break
                     time.sleep(1.5)
