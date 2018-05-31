@@ -8,7 +8,7 @@
 On august 2017 Troy Hunt web security expert from Australia introduced a new service **"Pwned Passwords"**  on his [website](https://haveibeenpwned.com/Passwords) that provides opportunity to check passwords against those obtained from previous data breaches (more than 320+ million passwords).
 
 This python script allows you to check if password (or list of passwords) in the HIBP data base.
-It generates a hash of password with SHA1 algorithm and sends **ONLY** 5 characters (*prefix*) of hash to HIBP (encrypted with TLS) to receive set suffixes of hashes in response (*so you do not have to send full hash of your password/s*) by using [API](https://haveibeenpwned.com/API/v2#SearchingPwnedPasswordsByRange) with [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) . Then it compares received hashes with hash of your password/s.
+It generates a hash of password with SHA1 algorithm and sends **ONLY** 5 characters (*prefix*) of hash to HIBP (encrypted with TLS) to receive set suffixes of hashes in response (*so you do not send full hash of your password/s*) by using [API](https://haveibeenpwned.com/API/v2#SearchingPwnedPasswordsByRange) with [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) . Then it compares received hashes with hash of your password/s.
 
 ## Other options
 You can also check if password was **PWNED** by:
